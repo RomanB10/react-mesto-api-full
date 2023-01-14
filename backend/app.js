@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');// Валидация приходящих на сервер данных
+const cors = require('cors');
 const rateLimit = require('express-rate-limit');// Ограничение количества запросов,защита от Dos-атак
 const helmet = require('helmet');// Защита от веб-уязвимостей, настройка Security-заголовков
 
@@ -18,7 +19,8 @@ require('dotenv').config();// необходим, чтобы пользоват�
 const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
 // создаем сервер
 const app = express();
-
+// настройки cors с открытым api
+app.use(cors());
 // Защита от Dos-атак
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // окно 15 минут
