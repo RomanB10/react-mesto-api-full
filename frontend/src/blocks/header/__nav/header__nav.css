@@ -1,0 +1,14 @@
+.header__nav{
+    margin: 0;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+}
+
+@media (max-width: 520px) {
+    .header__nav {
+        padding-left: 30px;
+        flex-direction: column;
+    }
+}
