@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
 
   try {
     // верифицируем токен
-    payload = jwt.verify(token, JWT_SECRET_KEY);
+    payload = jwt.verify(token, process.env.NODE_ENV === 'production' ? JWT_SECRET_KEY : 'dev-secret');
   } catch (err) {
     if (err.statusCode === 401 || err.name === 'JsonWebTokenError') {
       next(new UnauthorizedError(ERROR_401));

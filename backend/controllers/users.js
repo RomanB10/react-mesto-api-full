@@ -120,7 +120,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       // аутентификация успешна
       // создаем токен
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET_KEY, {
+      const token = jwt.sign({ _id: user._id }, process.env.NODE_ENV === 'production' ? JWT_SECRET_KEY : 'dev-secret', {
         expiresIn: '7d',
       });
       // вернём токен
