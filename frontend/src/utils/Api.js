@@ -1,30 +1,33 @@
 class Api {
-  /* #onResponse(res){
-     res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
-  }*/
   constructor(config) {
     this._url = config.url;
     this._headers = config.headers;
   }
-  /*  _getResponse(res) {
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
-  }*/
 
   //Загрузка карточек с сервера
+  // сработает при GET-запросе на URL '/cards' - возвращает все карточки
   getAllCards() {
-    return fetch(`${this._url}/v1/cohort-51/cards`, {
+    const token = localStorage.getItem('jwt')
+    return fetch(`${this._url}/cards`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     }).then((res) =>
       res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
     );
   }
 
   //Добавление новой карточки
+  // сработает при POST-запросе на URL '/cards' - добавляет карточку
   addNewCard(data) {
-    return fetch(`${this._url}/v1/cohort-51/cards`, {
+    const token = localStorage.getItem('jwt')
+    return fetch(`${this._url}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        "Content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(data),
     }).then((res) =>
       res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
@@ -32,22 +35,31 @@ class Api {
   }
   //Удаление карточки
   removeCard(idCard) {
-    return fetch(`${this._url}/v1/cohort-51/cards/${idCard}`, {
+    const token = localStorage.getItem('jwt')
+    return fetch(`${this._url}/cards/${idCard}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     }).then((res) =>
       res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
     );
   }
 
-  //Установка и снятие лайка (PUT,DELETE) https://mesto.nomoreparties.co/v1/cohortId/cards/cardId/likes
-
+  //Установка и снятие лайка (PUT,DELETE) https://localhost:3000/cards/cardId/likes
   changeLikeCardStatus(idCard, isLiked) {
-    const addLike = { method: "PUT", headers: this._headers };
-    const deleteLike = { method: "DELETE", headers: this._headers };
+    const token = localStorage.getItem('jwt')
+    const addLike = { 
+      method: "PUT", 
+      headers: {authorization: `Bearer ${token}`}
+    };
+    const deleteLike = { 
+      method: "DELETE", 
+      headers: {authorization: `Bearer ${token}`}
+    };
 
     return fetch(
-      `${this._url}/v1/cohort-51/cards/${idCard}/likes`,
+      `${this._url}/cards/${idCard}/likes`,
       isLiked ? deleteLike : addLike
     ).then((res) =>
       res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
@@ -55,19 +67,28 @@ class Api {
   }
 
   //Загрузка информации о пользователе с сервера
+  // сработает при GET-запросе на URL '/users/me' - получить информацию о текущем пользователе
   getUserInfo() {
-    return fetch(`${this._url}/v1/cohort-51/users/me`, {
-      headers: this._headers,
+    const token = localStorage.getItem('jwt')
+    return fetch(`${this._url}/users/me`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     }).then((res) =>
       res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
     );
   }
 
   //Обновление данных пользователя (name, about)
+  // сработает при PATCH-запросе на URL '/users/me' - обновляет профиль
   setUserInfo(data) {
-    return fetch(`${this._url}/v1/cohort-51/users/me`, {
+    const token = localStorage.getItem('jwt')
+    return fetch(`${this._url}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        "Content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -78,10 +99,15 @@ class Api {
   }
 
   //Обновление аватара пользователя (avatar)
+  // сработает при PATCH-запросе на URL '/users/me/avatar' - обновляет аватар
   setUserAvatar(data) {
-    return fetch(`${this._url}/v1/cohort-51/users/me/avatar/`, {
+    const token = localStorage.getItem('jwt')
+    return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        "Content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({
         avatar: data.avatar,
       }),
@@ -94,11 +120,17 @@ class Api {
 //Прямо внутри api.js создайте экземпляр класса Api с нужными параметрами (включая ваш токен)
 //и экспортируйте этот экземпляр вместо самого класса.
 const api = new Api({
-  url: "https://mesto.nomoreparties.co",
-  headers: {
+  /*url: "https://mesto.nomoreparties.co",*/
+  url: "http://localhost:3000",
+ /* headers: {
+    "Accept": "application/json",
+    "Content-type": "application/json",
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  },*/
+  /*headers: {
     "Content-type": "application/json",
     authorization: "d90e3811-ba6b-4a7f-96a8-92745ac1e8db",
-  },
+  },*/
 });
 
 export default api;

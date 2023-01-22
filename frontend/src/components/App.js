@@ -140,7 +140,6 @@ function App() {
   //Функция удаления карточки
   function handleCardDelete(card) {
     handleConfirmationClick(true);
-
     api
       .removeCard(card._id)
       .then(() => {
@@ -196,7 +195,7 @@ function App() {
       }
       if (user) {
         setLoggedIn(true);
-        setUserData(user.data); //Обновление стэйта данными с ссервера _id, email*/
+        setUserData({ email: `${user.email}` }); //Обновление стэйта данными email/
       }
     } catch (err) {
       if (err === 400) {

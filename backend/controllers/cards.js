@@ -2,7 +2,7 @@ const Card = require('../modeles/card'); // импорт моделе с соо�
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
-
+const cardSchema = require('../modeles/card');
 const {
   OK,
   CREATED,
@@ -23,14 +23,16 @@ module.exports.getCards = (req, res, next) => {
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body; // получим из объекта запроса имя и ссылку
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.status(CREATED).send({
-      likes: card.likes,
-      _id: card._id,
-      name: card.name,
-      link: card.link,
-      owner: card.owner,
-      createdAt: card.createdAt,
-    }))
+    /*.populate(['likes', 'owner'])*/
+    .then((card)=> cardSchema.populate(card, ['likes', 'owner'])
+      .then((populateCard) => res.status(CREATED).send({
+      likes: populateCard.likes,
+      _id: populateCard._id,
+      name: populateCard.name,
+      link: populateCard.link,
+      owner: populateCard.owner,
+      createdAt: populateCard.createdAt,
+      })))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(ERROR_400));
@@ -43,6 +45,7 @@ module.exports.createCard = (req, res, next) => {
 // сработает при DELETE-запросе на URL '/cards/:cardId' - удаляет карточку по идентификатору
 module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
+    .populate(['likes', 'owner'])
     .then((card) => {
       if (!card) {
         throw new NotFoundError(ERROR_404);
@@ -79,6 +82,7 @@ module.exports.likeCard = (req, res, next) => {
       runValidators: true, // данные будут валидированы перед изменением
     },
   )
+    .populate(['likes', 'owner'])
     .then((card) => {
       if (!card) {
         throw new NotFoundError(ERROR_404);
@@ -108,6 +112,7 @@ module.exports.disLikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
+    .populate(['likes', 'owner'])
     .then((card) => {
       if (!card) {
         throw new NotFoundError(ERROR_404);

@@ -35,6 +35,7 @@ module.exports.getCurrentUser = (req, res, next) => {
         about: user.about,
         avatar: user.avatar,
         _id: user._id,
+        email: user.email,
       });
     })
     .catch((err) => {
@@ -133,6 +134,8 @@ module.exports.login = (req, res, next) => {
 // сработает при PATCH-запросе на URL '/users/me' - обновляет профиль
 module.exports.updateProfile = (req, res, next) => {
   const { name, about } = req.body;
+  console.log('req.body',req.body);
+  console.log('req.user._id', req.user._id);
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
@@ -142,13 +145,14 @@ module.exports.updateProfile = (req, res, next) => {
     },
   )
     .then((user) => {
+      console.log('в then попал', user)
       if (!user) {
         throw new NotFoundError(ERROR_404);
       }
       res.send({
-        name: user.name,
         about: user.about,
         avatar: user.avatar,
+        name: user.name,
         _id: user._id,
       });
     })
@@ -177,9 +181,9 @@ module.exports.updateAvatar = (req, res, next) => {
         throw new NotFoundError(ERROR_404);
       }
       res.send({
-        name: user.name,
         about: user.about,
         avatar: user.avatar,
+        name: user.name,
         _id: user._id,
       });
     })

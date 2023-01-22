@@ -1,5 +1,5 @@
 /*export const BASE_URL = "https://auth.nomoreparties.co";*/
-export const BASE_URL = "http://localhost:3000/";
+export const BASE_URL = "http://localhost:3000";
 
 //Метод регистрации
 export const register = (password, email) => {
@@ -17,6 +17,7 @@ export const authorize = (password, email) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
+      "Accept": "application/json",
       "Content-type": "application/json",
     },
     body: JSON.stringify({ password: password, email: email }),
