@@ -134,8 +134,6 @@ module.exports.login = (req, res, next) => {
 // сработает при PATCH-запросе на URL '/users/me' - обновляет профиль
 module.exports.updateProfile = (req, res, next) => {
   const { name, about } = req.body;
-  console.log('req.body',req.body);
-  console.log('req.user._id', req.user._id);
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
@@ -145,7 +143,6 @@ module.exports.updateProfile = (req, res, next) => {
     },
   )
     .then((user) => {
-      console.log('в then попал', user)
       if (!user) {
         throw new NotFoundError(ERROR_404);
       }

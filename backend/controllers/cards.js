@@ -23,15 +23,14 @@ module.exports.getCards = (req, res, next) => {
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body; // получим из объекта запроса имя и ссылку
   Card.create({ name, link, owner: req.user._id })
-    /*.populate(['likes', 'owner'])*/
-    .then((card)=> cardSchema.populate(card, ['likes', 'owner'])
+    .then((card) => cardSchema.populate(card, ['likes', 'owner'])
       .then((populateCard) => res.status(CREATED).send({
-      likes: populateCard.likes,
-      _id: populateCard._id,
-      name: populateCard.name,
-      link: populateCard.link,
-      owner: populateCard.owner,
-      createdAt: populateCard.createdAt,
+        likes: populateCard.likes,
+        _id: populateCard._id,
+        name: populateCard.name,
+        link: populateCard.link,
+        owner: populateCard.owner,
+        createdAt: populateCard.createdAt,
       })))
     .catch((err) => {
       if (err.name === 'ValidationError') {

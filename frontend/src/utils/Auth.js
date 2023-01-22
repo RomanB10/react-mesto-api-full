@@ -1,5 +1,5 @@
-/*export const BASE_URL = "https://auth.nomoreparties.co";*/
-export const BASE_URL = "http://localhost:3000";
+/*export const BASE_URL = "http://localhost:3000";*/
+export const BASE_URL = "https://api.mesto.romanb10.nomoredomains.rocks";
 
 //Метод регистрации
 export const register = (password, email) => {

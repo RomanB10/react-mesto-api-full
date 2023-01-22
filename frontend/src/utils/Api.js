@@ -1,7 +1,6 @@
 class Api {
   constructor(config) {
     this._url = config.url;
-    this._headers = config.headers;
   }
 
   //Загрузка карточек с сервера
@@ -117,20 +116,11 @@ class Api {
   }
 }
 
-//Прямо внутри api.js создайте экземпляр класса Api с нужными параметрами (включая ваш токен)
+//Прямо внутри api.js создайте экземпляр класса Api 
 //и экспортируйте этот экземпляр вместо самого класса.
 const api = new Api({
-  /*url: "https://mesto.nomoreparties.co",*/
-  url: "http://localhost:3000",
- /* headers: {
-    "Accept": "application/json",
-    "Content-type": "application/json",
-    authorization: `Bearer ${localStorage.getItem('jwt')}`,
-  },*/
-  /*headers: {
-    "Content-type": "application/json",
-    authorization: "d90e3811-ba6b-4a7f-96a8-92745ac1e8db",
-  },*/
+ /* url: "http://localhost:3000",*/
+ url: "https://api.mesto.romanb10.nomoredomains.rocks",
 });
 
 export default api;
