@@ -26,7 +26,6 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
   //переменные состояния тултипа
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [tooltipStatus, setTooltipStatus] = useState("");
@@ -59,16 +58,11 @@ function App() {
     setSelectedCard(card);
   }
 
-  function handleConfirmationClick() {
-    setIsConfirmationPopupOpen(true);
-  }
-
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard(null);
-    setIsConfirmationPopupOpen(false);
     setIsInfoToolTipOpen(false);
   }
 
@@ -133,13 +127,8 @@ function App() {
       });
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
-
   //Функция удаления карточки
   function handleCardDelete(card) {
-    handleConfirmationClick(true);
     api
       .removeCard(card._id)
       .then(() => {
@@ -334,15 +323,6 @@ function App() {
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
-          />
-          <PopupWithForm
-            id="3"
-            name="confirmation"
-            title="Вы уверены?"
-            btnText="Да"
-            isOpen={isConfirmationPopupOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleSubmit}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}

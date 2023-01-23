@@ -42,6 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // подключаемся к серверу mongo
 mongoose.connect(MONGO_URL, (err) => {
   if (err) throw err;
+  // eslint-disable-next-line no-console
   console.log('Connected to MongoDB!!!');
 });
 
@@ -88,8 +89,10 @@ app.use(CentralHandingError);
 // Слушаем 3000 порт
 app.listen(PORT, (err) => {
   if (err) {
+    // eslint-disable-next-line no-console
     console.log('Error while starting server');
   } else {
+    // eslint-disable-next-line no-console
     console.log('Server has been started at port -', PORT);
   }
 });
